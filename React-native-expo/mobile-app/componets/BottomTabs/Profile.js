@@ -1,14 +1,10 @@
-import React,{useContext,useState,useEffect} from 'react'
-import { StyleSheet, Text, View,Image,SafeAreaView,ScrollView,Button,Modal } from 'react-native'
-// import {UserContext} from "../../context/UserContext"
-// import {FirebaseContext} from "../../context/FirebaseContext"
+import React,{useState,useEffect} from 'react'
+import { StyleSheet, Text, View,Image,SafeAreaView,ScrollView,Modal } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { auth, db } from "../../firebase"
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 const Profile = ({navigation,route}) => {
-    //  const [user, setUser] = useContext(UserContext)
-    //  const firebase = useContext(FirebaseContext)
      const [profileUserData, setProfileUserData] = useState();
      const [modal,setModal] = useState(false)
      const [countPosts,setCountPosts] = useState(0)
@@ -43,6 +39,7 @@ const Profile = ({navigation,route}) => {
       });
   }, [])
 
+
   const logOut = () =>{
     auth.signOut()
     .then(()=> {
@@ -50,9 +47,8 @@ const Profile = ({navigation,route}) => {
     })
   }
   
-    return (
-      
-        <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+    return (      
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
                 <View style={styles.header}>
 
                   <View>
@@ -114,7 +110,6 @@ const Profile = ({navigation,route}) => {
       style={styles.userBtn}
       onPress={() => {
         navigation.navigate('Profileedit');
-        // console.log("Edit")
       }}>
       <Text style={styles.userBtnTxt}>Edit</Text>
     </TouchableOpacity>
@@ -123,7 +118,6 @@ const Profile = ({navigation,route}) => {
     </TouchableOpacity>
 
 </View>
-
     </ScrollView>
 
     <Modal
@@ -139,8 +133,6 @@ const Profile = ({navigation,route}) => {
       <Image source={ {uri: profileUserData?.photoURL}} style={{width:"100%",height:"100%"}}/>
       </View>
     </Modal>
-
-
     </SafeAreaView>
     )
 }
@@ -215,7 +207,6 @@ const styles = StyleSheet.create({
         color: '#666',
         textAlign: 'center',
       },  modalView:{
-        //  position: "absolute",
          top:50,
          width:"100%",
          backgroundColor:"#D3D3D3",
@@ -223,7 +214,6 @@ const styles = StyleSheet.create({
          height:"70%",
          justifyContent:"center",
          alignItems:"center"
-        //  margin:20
      },
      header: {
        flexDirection: "row",

@@ -1,27 +1,14 @@
-import React,{useLayoutEffect,useState,useEffect} from 'react';
+import React,{useLayoutEffect} from 'react';
 import { 
     View, 
-    Text, 
-    TouchableOpacity, 
-    TextInput,
-    Platform,
-    StyleSheet ,
-    Alert,
-    Image,
-    Animated,
-    ScrollView
-
+    TouchableOpacity,
+    StyleSheet
 } from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient';
-import {FontAwesome} from '@expo/vector-icons';
-import {Feather} from '@expo/vector-icons';
 
-import { useTheme } from 'react-native-paper';
 import { StatusBar } from 'expo-status-bar';
 import { Avatar } from 'react-native-elements'
-import { auth,db } from '../firebase'
-import {AntDesign, SimpleLineIcons, Entypo} from '@expo/vector-icons'
-import { Ionicons } from '@expo/vector-icons'; 
+import { auth } from '../firebase'
+import {Entypo} from '@expo/vector-icons'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../componets/BottomTabs/Home';
@@ -32,13 +19,11 @@ import Notifications from '../componets/BottomTabs/Notifications';
 
 
 const HomeScreen = ({navigation}) => {
+  const Tab = createMaterialBottomTabNavigator();
+
   if(!auth.currentUser?.uid){
     navigation.navigate("SignIn")
 }
-
-
-const Tab = createMaterialBottomTabNavigator();
-
 
 const signOut = () =>{
   auth.signOut()
@@ -46,7 +31,6 @@ const signOut = () =>{
       navigation.replace('SignIn')
   })
 }
-
 
 
 useLayoutEffect(() => {
@@ -94,7 +78,6 @@ var badgeCount = 12
         <StatusBar style='light'/>
     <Tab.Navigator
       initialRouteName="Feed"
-      // activeColor="#fff"
       activeColor="#f0edf6"
       barStyle={{ 
 
@@ -106,7 +89,6 @@ var badgeCount = 12
         position:'absolute',
         bottom: 0,
         padding:6,
-        // width: DEVICE_WIDTH,
         height: 60,
         zIndex: 8 
        }}
@@ -167,7 +149,6 @@ var badgeCount = 12
 
   )
 }
-
 export default HomeScreen
 
 const styles = StyleSheet.create({
