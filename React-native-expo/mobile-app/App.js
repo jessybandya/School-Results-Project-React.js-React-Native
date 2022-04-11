@@ -6,6 +6,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Addpost from './componets/Addpost';
+import PostView from './componets/PostView';
 
 const Stack = createNativeStackNavigator();
 // const myOptions ={
@@ -38,6 +39,7 @@ export default function App() {
     <Stack.Screen name="SignUp" component={SignUpScreen} />
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="Addpost" component={Addpost} />
+    <Stack.Screen name="Postview" component={PostView} />
     </Stack.Navigator>
   </NavigationContainer>
   );

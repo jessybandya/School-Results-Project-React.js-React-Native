@@ -1,11 +1,18 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Calc from '../TopTabs/Calc';
+import Bmi from '../TopTabs/Bmi';
 
 const SimpleCalc = () => {
+  
+const Tab = createMaterialTopTabNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>E-Calclulator</Text>
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name="Calc" component={Calc} />
+      <Tab.Screen name="Bmi" component={Bmi} />
+    </Tab.Navigator>
   )
 }
 

@@ -156,12 +156,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 10,
         marginBottom: 10,
+        color:"#0a7ff5"
       },
       names:{
         fontSize: 18,
         fontWeight: 'bold',
         marginTop: 0,
         marginBottom: 0,
+        color: "#0a7ff5",
       },
       aboutUser: {
         fontSize: 12,
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
       },
       userBtn: {
-        borderColor: '#2e64e5',
+        borderColor: '#0a7ff5',
         borderWidth: 2,
         borderRadius: 3,
         paddingVertical: 8,
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
       },
       userBtnTxt: {
-        color: '#2e64e5',
+        color: '#0a7ff5',
       },
       userInfoWrapper: {
         flexDirection: 'row',
@@ -201,6 +203,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 5,
         textAlign: 'center',
+        color:"#0a7ff5"
       },
       userInfoSubTitle: {
         fontSize: 12,
@@ -221,7 +224,7 @@ const styles = StyleSheet.create({
        paddingHorizontal: 32,
        paddingVertical: 12,
        borderBottomWidth: 1,
-       borderBottomColor: "#08d4c4",
+       borderBottomColor: "#0a7ff5",
        marginTop:0,
    },
 })

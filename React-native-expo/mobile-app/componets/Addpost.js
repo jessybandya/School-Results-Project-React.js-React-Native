@@ -1,8 +1,6 @@
-import React,{useLayoutEffect,useState} from 'react';
-import { StyleSheet, Text, View,Modal,Alert,TouchableOpacity } from 'react-native'
-import { Input } from 'react-native-elements'
+import React,{useLayoutEffect,useState,useEffect} from 'react';
+import { StyleSheet, Text, View,Modal,Alert,TouchableOpacity,SafeAreaView, Image, TextInput } from 'react-native'
 import {Button} from "react-native-paper";
-import { StatusBar } from 'expo-status-bar';
 import { auth,db } from '../firebase'
 import { Ionicons } from '@expo/vector-icons'; 
 import * as ImagePicker from 'expo-image-picker'
@@ -14,7 +12,15 @@ const Addpost = ({navigation}) => {
     const [desc,setDesc]= useState("")
     const [imageUrl,setImageUrl]=useState("")
     const [modal,setModal]= useState(false);
+    const [profileUserData, setProfileUserData] = useState();
 
+    useEffect(() => {
+        db.collection('users').doc(`${auth?.currentUser?.uid}`).onSnapshot((doc) => {
+            setProfileUserData(doc.data());
+        });
+    }, [])
+
+    
 useLayoutEffect(() => {
     navigation.setOptions({
         title:"POST",
@@ -57,6 +63,7 @@ const addPost = async(event) =>{
             navigation.navigate("Home")
             Alert.alert('Thank you!', "Your post has been sent to the admin for verification. You'll will get feed back in the next 5 mins.")
         }).catch((error)=> alert(error))
+        
     }
 }
 
@@ -122,30 +129,45 @@ const pickFromGallery = async ()=>{
 
 
    return (
-    <View style={styles.container}>
-         <StatusBar  style="light"/>
-
-        <Input 
-        placeholder="Enter title"
+<SafeAreaView style={styles.container}>
+<View style={styles.inputContainer}>
+    <Image source={{uri: profileUserData?.photoURL}} style={styles.avatar}></Image>
+    <TextInput
+        autoFocus={true}
+        multiline={true}
+        numberOfLines={2}
+        style={{ flex: 1,
+            borderBottomWidth: 2,
+            borderBottomColor: "#08d4c4",
+         }}
+        placeholder="Title..."
         value={title}
         onChangeText={(text)=> setTitle(text)}
-        />        
-     <Input 
-        placeholder="Enter description"
+
+    ></TextInput>
+    <TouchableOpacity style={styles.photo}onPress={() => setModal(true)} >
+    <Ionicons name="md-camera" size={32} color="#D8D9DB"></Ionicons>
+</TouchableOpacity>
+</View>
+
+<View style={styles.inputContainer1}>
+    <TextInput
+        autoFocus={true}
+        multiline={true}
+        numberOfLines={4}
+        style={{ flex: 1,
+            borderBottomWidth: 2,
+            borderBottomColor: "#08d4c4",
+            paddingRight:10,
+            marginRight:50
+         }}
+        placeholder="Description..."
         value={desc}
         onChangeText={(text)=> setDesc(text)}
-        />
-        
-        <Button 
-    icon={imageUrl==""?"upload":"check"}
-    style={styles.button}
-     mode="contained"
-     onPress={() => setModal(true)} 
-    >
-        Add Image
-    </Button>
+    ></TextInput>
 
-    {title !== '' && (
+</View>
+{title !== '' && desc !== '' &&(
         <Button
         style={styles.button1}
          mode="contained"
@@ -155,6 +177,13 @@ const pickFromGallery = async ()=>{
         </Button>
     )}
 
+<View style={{marginTop: 32, height: "50%",width:"100%" }}>
+    {imageUrl ?(
+    <Image source={{ uri: imageUrl }} style={{ width: "100%", height: "100%" }}/>
+    ):(
+        <Text style={{margin:85}}>No image has been selected</Text>
+    )}
+</View>
     <Modal
     animationType="slide"
     transparent={true}
@@ -167,7 +196,7 @@ const pickFromGallery = async ()=>{
        <View style={styles.modalButtonView}>
        <Button 
     icon="camera"
-    style={{backgroundColor:"#0a7ff5"}}
+    style={{backgroundColor:"#08d4c4"}}
      mode="contained" 
      onPress={() => pickFromCamera()} 
     >
@@ -175,7 +204,7 @@ const pickFromGallery = async ()=>{
     </Button>
     <Button 
     icon="image-area"
-    style={{backgroundColor:"#0a7ff5"}}
+    style={{backgroundColor:"#08d4c4"}}
     mode="contained" 
     onPress={() => pickFromGallery()} 
     >
@@ -186,31 +215,56 @@ const pickFromGallery = async ()=>{
    
     onPress={() => setModal(false)} 
     >
-        <Text style={{color:"#0a7ff5",fontSize:15}}>Cancel</Text>
+        <Text style={{color:"#08d4c4",fontSize:15}}>Cancel</Text>
     </Button>
    </View>
-    </Modal>       
-    </View>
+    </Modal> 
+</SafeAreaView>
 )
 }
-
 export default Addpost
 
 const styles = StyleSheet.create({
-container:{
-    backgroundColor:"white",
-    padding:30,
-    height:"100%"
-},
-button:{
+    container: {
+        flex: 1,
+     backgroundColor:"white",
+      height:"100%"
+    },
+    header: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: 32,
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: "#D8D9DB",
+        marginTop:50
+    },
+    inputContainer: {
+        margin: 32,
+        flexDirection: "row"
+    },inputContainer1: {
+        marginTop: 0,
+        marginLeft:100,
+        flexDirection: "row"
+    },
+    avatar: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        marginRight: 16
+    },
+    photo: {
+        marginHorizontal: 0
+    },
+    button:{
  width:300,
  marginTop:-15,
- backgroundColor:"#0a7ff5",
+ backgroundColor:"#08d4c4",
 },
 button1:{
  width:300,
- marginTop:50,
- backgroundColor:"#0a7ff5",
+ margin:25,
+ backgroundColor:"#08d4c4",
 },
 modalView:{
  position: "absolute",
@@ -223,4 +277,4 @@ modalButtonView:{
  justifyContent:"space-around",
  padding:10
 },
-})
+});

@@ -1,4 +1,4 @@
-import React,{useLayoutEffect} from 'react';
+import React,{useLayoutEffect,useState,useEffect} from 'react';
 import { 
     View, 
     TouchableOpacity,
@@ -7,7 +7,7 @@ import {
 
 import { StatusBar } from 'expo-status-bar';
 import { Avatar } from 'react-native-elements'
-import { auth } from '../firebase'
+import { auth, db } from '../firebase'
 import {Entypo} from '@expo/vector-icons'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,10 +16,26 @@ import SimpleCalc from '../componets/BottomTabs/SimpleCalc';
 import Elibrary from '../componets/BottomTabs/Elibrary';
 import Profile from '../componets/BottomTabs/Profile';
 import Notifications from '../componets/BottomTabs/Notifications';
-
+import { AntDesign } from '@expo/vector-icons'; 
 
 const HomeScreen = ({navigation}) => {
   const Tab = createMaterialBottomTabNavigator();
+  const [profileUserData, setProfileUserData] = useState();
+  const [badgeCount,setBadgeCount] = useState(0)
+  const [see,setSee] = useState()
+
+  useEffect(() => {
+    db.collection('posts').where("onwerId","==",auth?.currentUser?.uid).where("allowed","==",true)
+     .onSnapshot(snapshot => (
+      setBadgeCount(snapshot.docs.length)
+     ))
+  }, []);
+
+  useEffect(() => {
+    db.collection('users').doc(`${auth?.currentUser?.uid}`).onSnapshot((doc) => {
+        setProfileUserData(doc.data());
+    });
+}, [])
 
   if(!auth.currentUser?.uid){
     navigation.navigate("SignIn")
@@ -48,7 +64,8 @@ useLayoutEffect(() => {
        <View style={{alignItems:"center",flexDirection:"row"}}>
                    <TouchableOpacity onPress={signOut} activeOpacity={0.5}>
                        <View>
-                       <Avatar rounded source={{ uri:auth?.currentUser?.photoURL}}/>  
+                       {/* <Avatar rounded source={{ uri:profileUserData?.photoURL}}/>   */}
+                       <AntDesign name="logout" size={24} color="#fff" />
                        </View>
                   </TouchableOpacity>         
        </View>,
@@ -71,7 +88,6 @@ useLayoutEffect(() => {
 
 }, [])
 
-var badgeCount = 12
 
   return (
     <>
